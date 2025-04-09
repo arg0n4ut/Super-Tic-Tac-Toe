@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #ffffff;
+  }
+  
+  /* Event logo styling */
+  #event-logo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  /* Outer board: 3×3 grid of super-cells */
+  #game-board {
+    width: 450px;
+    height: 450px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0px;
+    border: 4px solid black;
+  }
+  
+  /* Each super-cell (sub-field): 3×3 grid of cells */
+  .super-cell {
+    background: rgb(59, 59, 59);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    position: relative;
+    border: 2px solid #000000;
+  }
+  
+  /* Highlight active sub-field (if applicable) */
+  .super-cell.active {
+    border: 3px dashed green;
+  }
+  
+  /* Individual cells */
+  .cell {
+    background: #f0f0f0;
+    aspect-ratio: 1 / 1; /* Ensures square cells */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .cell svg {
+    width: 80%;
+    height: 80%;
+  }
+  
+  /* Color won sub-fields: blue for player X, red for player O */
+  .super-cell.won-x {
+    background-color: #ffd3c5;
+  }
+  
+  .super-cell.won-o {
+    background-color: #d0e6ff;
+  }
+  
+  /* Optionally style drawn sub-fields */
+  .super-cell.draw {
+    background-color: #7c7c7c81;
+  }
+
+  #player-indicator {
+    position: absolute;
+    left: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+
+  #icon-x line {
+    stroke: #9e0000;
+  }
+
+  #icon-o circle {
+    stroke: #00008a;
+  }
+
+  @keyframes springy {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .cell.springy {
+    animation: springy 0.3s ease-out;
+  }
