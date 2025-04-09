@@ -39,7 +39,7 @@
   
   /* Highlight active sub-field (if applicable) */
   .super-cell.active {
-    border: 3px dashed rgb(0, 223, 0);
+    border: 5px dashed rgb(0, 223, 0);
   }
   
   /* Individual cells */
