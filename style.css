@@ -7,6 +7,11 @@
     margin: 0;
     padding: 20px;
     background: #ffffff;
+    overflow: hidden;
+  }
+
+  canvas {
+    display: block;
   }
   
   /* Event logo styling */

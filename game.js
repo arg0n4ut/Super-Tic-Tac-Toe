@@ -110,9 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check overall game win: construct an array from fieldWinners (treat draws as null).
         const overallWinner = checkWin(fieldWinners.map(val => (val === 'D' ? null : val)));
         if (overallWinner) {
-          alert('Spieler ' + overallWinner + ' hat gewonnen!');
+          // alert('Spieler ' + overallWinner + ' hat gewonnen!');
           playerIndicator.textContent = `${overallWinner} hat gewonnen!`;
           gameOver = true;
+          animate();
           return;
         } else if (fieldWinners.every(val => val !== null)) {
           alert('Unentschieden ...');
@@ -173,4 +174,89 @@ document.addEventListener('DOMContentLoaded', () => {
     function isFull(arr) {
       return arr.every(cell => cell !== null);
     }
+
+    // Add confetti animation
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const particles = [];
+    
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    
+    function createParticle() {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        size: Math.random() * 7 + 3,
+        speedX: (Math.random() - 0.5) * 5,
+        speedY: Math.random() * 4 + 2,
+        rotation: (Math.random() - 0.5) * 6,
+        color: `hsl(${Math.random() * 360}, 90%, 70%)`
+      });
+    }
+    
+    function updateParticle(particle) {
+      particle.x += particle.speedX;
+      particle.y += particle.speedY;
+    
+      particle.x += Math.sin(particle.y * 0.2) * Math.random() * 0.5;
+    
+      if (particle.y > canvas.height + 20) {
+        particle.y = Math.random() * canvas.height - canvas.height;
+        particle.x = Math.random() * canvas.width;
+      }
+    }
+    
+    function drawParticle(particle) {
+      ctx.save();
+      ctx.translate(particle.x, particle.y);
+      ctx.rotate(particle.rotation);
+      ctx.fillStyle = particle.color;
+    
+      ctx.fillRect(
+        particle.size,
+        particle.size / 4,
+        particle.size * 2,
+        particle.size / 2
+      );
+    
+      ctx.restore();
+    }
+    
+    for (let i = 0; i < 400; i++) {
+      createParticle();
+    }
+    
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((particle) => {
+        updateParticle(particle);
+        drawParticle(particle);
+      });
+    
+      requestAnimationFrame(animate);
+    }
+
+    // Add double-click event listener to the event logo
+    const eventLogo = document.querySelector('#event-logo'); // Assuming the logo has an ID of 'event-logo'
+    if (eventLogo) {
+        eventLogo.addEventListener('dblclick', () => {
+            animate();
+        });
+    }
+
+    // Ensure the confetti animation appears in front of all content
+    const confettiContainer = document.getElementById('canvas');
+    confettiContainer.style.position = 'fixed';
+    confettiContainer.style.top = '0';
+    confettiContainer.style.left = '0';
+    confettiContainer.style.width = '100%';
+    confettiContainer.style.height = '100%';
+    confettiContainer.style.pointerEvents = 'none';
+    confettiContainer.style.zIndex = '9999'; // Ensure it is in front of all content
   });
